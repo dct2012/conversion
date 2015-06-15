@@ -11,12 +11,13 @@ gcc -std=c11 -lm main.c
 TODO
 ----
 * Makefile
-* I dislike the case statements.
 * add invert option
     * on one of my computer's the xcb's are inverted?
 * add reverse
     * xcb's have the binary reversed
 * add shortcuts
+    * (almost complete)
 * add a loop
 * add a predication
     * be able to figure out what type the user inputed
+* work on negative numbers
