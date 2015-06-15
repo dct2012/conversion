@@ -21,3 +21,4 @@ TODO
 * add a predication
     * be able to figure out what type the user inputed
 * work on negative numbers
+* make things print nicer
