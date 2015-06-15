@@ -152,7 +152,7 @@ char* decimalToBinary(int number)
         size = 8;
     }
     
-    char binary[size];
+    char *binary = malloc(size);
 
     int temp;
     for(int i = (size - 1); i > -1; i--)
@@ -191,7 +191,7 @@ char* decimalToHex(int number)
         size = 2;
     }
     
-    char hex[size];
+    char *hex = malloc(size);
 
     int temp;
     for(int i = (size - 1); i > -1; i--)
@@ -218,7 +218,11 @@ void print_everything(int d, char *b, char *h)
 void decimal(char *decimal)
 {
     int number = atoi(decimal);
-    print_everything(number, decimalToBinary(number), decimalToHex(number));
+    char *b;
+    char *h;
+    print_everything(number, b = decimalToBinary(number), h = decimalToHex(number));
+    free(b);
+    free(h);
 }
 
 void hexadecimal(char *hex)
@@ -248,7 +252,11 @@ void hexadecimal(char *hex)
     }
     
     if(flag)
-        print_everything(number, decimalToBinary(number), hex);
+    {
+        char *b;
+        print_everything(number, b = decimalToBinary(number), hex);
+        free(b);
+    }
     else
         puts("Error! insert a valid hexadecimal.\n");
 }
@@ -280,7 +288,11 @@ void binary(char *bin)
     }
         
     if(flag)
-        print_everything(number, bin, decimalToHex(number));
+    {
+        char *h;
+        print_everything(number, bin, h = decimalToHex(number));
+        free(h);
+    }
     else
         puts("Error! insert a valid binary.\n");
 }
