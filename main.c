@@ -89,13 +89,10 @@ void decimal(char *decimal)
 //TODO: if hexadecimal is lowercase print it uppercase
 void hexadecimal(char *hex)
 {
-    int size = 0;
     bool flag = true;
-    
-    for(int i = 0; hex[i]; i++)
-    {
-        size = i;
-    }
+   
+    int size;
+    for(size = 0; hex[i]; size++);
    
     int temp = 0;
     int number = 0;
@@ -125,13 +122,10 @@ void hexadecimal(char *hex)
 
 void binary(char *bin)
 {
-    int size = 0;
     bool flag = true;
     
-    for(int i = 0; bin[i]; i++)
-    {
-        size = i;
-    }
+    int size;
+    for(size = 0; bin[i]; size++);
    
     int number = 0;
     for(int i = 0; bin[i]; i++)
