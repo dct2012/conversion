@@ -46,12 +46,10 @@ void help()
 
 int hexadecimal_char_to_int(char hex)
 {
+    //TODO: try to consolidate these 2 conditions
     for (int i = 0; i < 16; i++)
-    {
-        //TODO: try to consolidate these 2 conditions
         if("0123456789ABCDEF"[i] == hex || "0123456789abcdef"[i] == hex)
             return i;
-    }
 }
 
 char* itoa(int val, int base)
@@ -75,26 +73,44 @@ void print_everything(int d, char *b, char *h)
     printf("Hexadecimal:   %s\n", h);
 }
 
+void error_message(char *e)
+{
+    printf("Error! insert a valid %s.\n", e);
+}
+
+bool is_decimal(char *d)
+{
+    // the chars 0-9 = int values 48-57
+    for(int i = 0; d[i]; i++)
+        if(d[i] < 48 || d[i] > 57)
+            return false;
+
+    return true;
+}
+
 void decimal(char *decimal)
 {
-    int number = atoi(decimal); //TODO; create own atoi, also check if decimal
-    char *b;
-    char *h;
-    print_everything(number, b = itoa(number, 2), h = itoa(number, 16));
-    free(b);
-    free(h);
+    if(is_decimal(decimal))
+    { 
+        int number = atoi(decimal); //TODO; create own atoi, also check if decimal
+        char *b;
+        char *h;
+        print_everything(number, b = itoa(number, 2), h = itoa(number, 16));
+        free(b);
+        free(h);
+    }
+    else
+        error_message("decimal");
 }
 
 bool is_hexadecimal(char *h)
 {
+    // the chars 0-9 = int values 48-57
+    // the chars A-F = int values 65-70
+    // the chars a-f = int values 97-102
     for(int i = 0; h[i]; i++)
-    {
-        // the chars 0-9 = int values 48-57
-        // the chars A-F = int values 65-70
-        // the chars a-f = int values 97-102
         if(h[i] < 48 || h[i] > 102 || (h[i] > 57 && h[i] < 65) || (h[i] > 70 && h[i] < 97))
             return false;
-    }
 
     return true;
 }
@@ -119,11 +135,6 @@ int hexadecimal_to_int(char *h, int size)
     }
 
     return val;
-}
-
-void error_message(char *e)
-{
-    printf("Error! insert a valid %s.\n", e);
 }
 
 //TODO: if hexadecimal is lowercase print it uppercase
@@ -181,12 +192,17 @@ void binary(char *bin)
 
 void easy_mode(char *c)
 {
-    int d = atoi(c);    //TODO: implement own atoi, check if decimal
-    char *b;
+    if(is_decimal(c))
+    {
+        int d = atoi(c);    //TODO: implement own atoi, check if decimal
+        char *b;
 
-    printf("Decimal:       %d\n", d);
-    printf("Binary:        %s\n", b = itoa(d, 2)); //I dont think there's a shorter way for binary
-    printf("Hexadecimal:   %X\n", d);
+        printf("Decimal:       %d\n", d);
+        printf("Binary:        %s\n", b = itoa(d, 2)); //I dont think there's a shorter way for binary
+        printf("Hexadecimal:   %X\n", d);
 
-    free(b);
+        free(b);
+    }
+    else
+        error_message("decimal");
 }
