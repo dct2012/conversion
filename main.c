@@ -99,12 +99,17 @@ bool is_hexadecimal(char *h)
     return true;
 }
 
-int hexadecimal_to_int(char *h)
+int char_array_length(char *a)
+{
+    int size;
+    for(size = 0; a[size + 1]; size++);
+
+    return size;
+}
+
+int hexadecimal_to_int(char *h, int size)
 {
     int val = 0;
-
-    int size;
-    for(size = 0; h[size + 1]; size++);
 
     for(int i = 0; h[i]; i++)
     {
@@ -116,6 +121,11 @@ int hexadecimal_to_int(char *h)
     return val;
 }
 
+void error_message(char *e)
+{
+    printf("Error! insert a valid %s.\n", e);
+}
+
 //TODO: if hexadecimal is lowercase print it uppercase
 //      print hexadecimals at lengths of 2, 4, ...
 void hexadecimal(char *hex)
@@ -123,12 +133,12 @@ void hexadecimal(char *hex)
     if(is_hexadecimal(hex))
     {
         char *b;
-        int i = hexadecimal_to_int(hex);
+        int i = hexadecimal_to_int(hex, char_array_length(hex));
         print_everything(i, b = itoa(i, 2), hex);
         free(b);
     }
     else
-        puts("Error! insert a valid hexadecimal.\n");
+        error_message("hexadecimal");
 }
 
 bool is_binary(char* b)
@@ -140,13 +150,10 @@ bool is_binary(char* b)
     return true;
 }
 
-int binary_to_int(char *b)
+int binary_to_int(char *b, int size)
 {
     int val = 0;
     
-    int size;
-    for(size = 0; b[size + 1]; size++);
-
     for(int i = 0; b[i]; i++)
     {
         if(b[i] == '1')
@@ -164,12 +171,12 @@ void binary(char *bin)
     if(is_binary(bin))
     {
         char *h;
-        int i = binary_to_int(bin);
+        int i = binary_to_int(bin, char_array_length(bin));
         print_everything(i, bin, h = itoa(i, 16));
         free(h);
     }
     else
-        puts("Error! insert a valid binary.\n");
+        error_message("binary");
 }
 
 void easy_mode(char *c)

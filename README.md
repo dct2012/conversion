@@ -4,10 +4,6 @@ This is a program I wrote a long time ago. Its primary purpose was to convert bi
 xcb's. One of the goals of this program was to use my own algorithms to do the conversion, I will probably go ahead and
 add a option to produce the conversion using shortcuts though.
 
-BUILD
------
-gcc -std=c11 -lm main.c
-
 TODO (these are pretty well in order of what should be done next)
 ----
 * implement atoi and decimal check
