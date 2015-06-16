@@ -44,12 +44,17 @@ void help()
     puts("-e (decimal)   convert using printf, etc");
 }
 
-int hexadecimal_char_to_int(char hex)
+
+void print_everything(int d, char *b, char *h)
 {
-    //TODO: try to consolidate these 2 conditions
-    for (int i = 0; i < 16; i++)
-        if("0123456789ABCDEF"[i] == hex || "0123456789abcdef"[i] == hex)
-            return i;
+    printf("Decimal:       %d\n", d);
+    printf("Binary:        %s\n", b);
+    printf("Hexadecimal:   %s\n", h);
+}
+
+void error_message(char *e)
+{
+    printf("Error! insert a valid %s.\n", e);
 }
 
 char* itoa(int val, int base)
@@ -66,16 +71,20 @@ char* itoa(int val, int base)
     return buf;
 }
 
-void print_everything(int d, char *b, char *h)
+int hexadecimal_char_to_int(char hex)
 {
-    printf("Decimal:       %d\n", d);
-    printf("Binary:        %s\n", b);
-    printf("Hexadecimal:   %s\n", h);
+    //TODO: try to consolidate these 2 conditions
+    for (int i = 0; i < 16; i++)
+        if("0123456789ABCDEF"[i] == hex || "0123456789abcdef"[i] == hex)
+            return i;
 }
 
-void error_message(char *e)
+int char_array_length(char *a)
 {
-    printf("Error! insert a valid %s.\n", e);
+    int size;
+    for(size = 0; a[size + 1]; size++);
+
+    return size;
 }
 
 bool is_decimal(char *d)
@@ -88,11 +97,25 @@ bool is_decimal(char *d)
     return true;
 }
 
+int char_to_int(char* d, int size)
+{
+    int val = 0;
+
+    for(int i = 0; d[i]; i++)
+    {
+        val += (d[i] - '0') * pow(10, size);
+
+        size--;
+    }
+
+    return val;
+}
+
 void decimal(char *decimal)
 {
     if(is_decimal(decimal))
     { 
-        int number = atoi(decimal); //TODO; create own atoi, also check if decimal
+        int number = char_to_int(decimal, char_array_length(decimal)); //TODO; create own atoi, also check if decimal
         char *b;
         char *h;
         print_everything(number, b = itoa(number, 2), h = itoa(number, 16));
@@ -113,14 +136,6 @@ bool is_hexadecimal(char *h)
             return false;
 
     return true;
-}
-
-int char_array_length(char *a)
-{
-    int size;
-    for(size = 0; a[size + 1]; size++);
-
-    return size;
 }
 
 int hexadecimal_to_int(char *h, int size)
@@ -194,7 +209,7 @@ void easy_mode(char *c)
 {
     if(is_decimal(c))
     {
-        int d = atoi(c);    //TODO: implement own atoi, check if decimal
+        int d = char_to_int(c, char_array_length(c));    //TODO: implement own atoi, check if decimal
         char *b;
 
         printf("Decimal:       %d\n", d);
