@@ -5,7 +5,6 @@
 #include <math.h>
 
 void help();
-int hexToNum(char);
 char* itoa(int, int);
 void print_everything(int, char*, char*);
 void decimal(char*);
@@ -45,7 +44,7 @@ void help()
     puts("-e (decimal)   convert using printf, etc");
 }
 
-int hexToNum(char hex)
+int hexadecimal_char_to_int(char hex)
 {
     for (int i = 0; i < 16; i++)
     {
@@ -78,7 +77,7 @@ void print_everything(int d, char *b, char *h)
 
 void decimal(char *decimal)
 {
-    int number = atoi(decimal);
+    int number = atoi(decimal); //TODO; create own atoi, also check if decimal
     char *b;
     char *h;
     print_everything(number, b = itoa(number, 2), h = itoa(number, 16));
@@ -86,67 +85,87 @@ void decimal(char *decimal)
     free(h);
 }
 
-//TODO: if hexadecimal is lowercase print it uppercase
-void hexadecimal(char *hex)
+bool is_hexadecimal(char *h)
 {
-    bool flag = true;
-   
-    int size;
-    for(size = 0; hex[i]; size++);
-   
-    int temp = 0;
-    int number = 0;
-    for(int i = 0; hex[i]; i++)
+    for(int i = 0; h[i]; i++)
     {
-        temp = hexToNum(hex[i]);
+        // the chars 0-9 = int values 48-57
+        // the chars A-F = int values 65-70
+        // the chars a-f = int values 97-102
+        if(h[i] < 48 || h[i] > 102 || (h[i] > 57 && h[i] < 65) || (h[i] > 70 && h[i] < 97))
+            return false;
+    }
 
-        if(temp == -1)
-        {
-            flag = false;
-        }
+    return true;
+}
 
-        number = number + (temp * pow(16, size));
+int hexadecimal_to_int(char *h)
+{
+    int val = 0;
+
+    int size;
+    for(size = 0; h[size + 1]; size++);
+
+    for(int i = 0; h[i]; i++)
+    {
+        val += hexadecimal_char_to_int(h[i]) * pow(16, size);
 
         size--;
     }
-    
-    if(flag)
+
+    return val;
+}
+
+//TODO: if hexadecimal is lowercase print it uppercase
+//      print hexadecimals at lengths of 2, 4, ...
+void hexadecimal(char *hex)
+{
+    if(is_hexadecimal(hex))
     {
         char *b;
-        print_everything(number, b = itoa(number, 2), hex);
+        int i = hexadecimal_to_int(hex);
+        print_everything(i, b = itoa(i, 2), hex);
         free(b);
     }
     else
         puts("Error! insert a valid hexadecimal.\n");
 }
 
-void binary(char *bin)
+bool is_binary(char* b)
 {
-    bool flag = true;
+    for(int i = 0; b[i]; i++)
+        if(b[i] != '0' && b[i] != '1')
+            return false;
+
+    return true;
+}
+
+int binary_to_int(char *b)
+{
+    int val = 0;
     
     int size;
-    for(size = 0; bin[i]; size++);
-   
-    int number = 0;
-    for(int i = 0; bin[i]; i++)
+    for(size = 0; b[size + 1]; size++);
+
+    for(int i = 0; b[i]; i++)
     {
-        if(bin[i] != '0' && bin[i] != '1')
-        {
-            flag = false;
-        }
-        
-        if(bin[i] == '1')
-        {
-            number = number + pow(2, size);
-        }
+        if(b[i] == '1')
+            val += pow(2, size);
 
         size--;
     }
-        
-    if(flag)
+
+    return val;
+}
+
+//TODO: print binary at lengths of 8, 16, ...
+void binary(char *bin)
+{    
+    if(is_binary(bin))
     {
         char *h;
-        print_everything(number, bin, h = itoa(number, 16));
+        int i = binary_to_int(bin);
+        print_everything(i, bin, h = itoa(i, 16));
         free(h);
     }
     else
@@ -155,11 +174,11 @@ void binary(char *bin)
 
 void easy_mode(char *c)
 {
-    int d = atoi(c);                                        //TODO: implement own atoi
+    int d = atoi(c);    //TODO: implement own atoi, check if decimal
     char *b;
 
     printf("Decimal:       %d\n", d);
-    printf("Binary:        %s\n", b = itoa(d, 2));          //TODO: I dont think there's a shorter way for binary
+    printf("Binary:        %s\n", b = itoa(d, 2)); //I dont think there's a shorter way for binary
     printf("Hexadecimal:   %X\n", d);
 
     free(b);

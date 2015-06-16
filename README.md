@@ -8,17 +8,17 @@ BUILD
 -----
 gcc -std=c11 -lm main.c
 
-TODO
+TODO (these are pretty well in order of what should be done next)
 ----
-* Makefile
-* add invert option
-    * on one of my computer's the xcb's are inverted?
-* add reverse
-    * xcb's have the binary reversed
-* add shortcuts
-    * (almost complete)
-* add a loop
+* implement atoi and decimal check
+* make things print nicer
+* work on negative numbers
 * add a predication
     * be able to figure out what type the user inputed
-* work on negative numbers
-* make things print nicer
+* add a loop
+* add invert option
+    * on one of my computer's the xcb's are inverted?
+    * so this would mean just invert the binary
+* add reverse
+    * xcb's have the binary reversed
+    * reverse the binary
