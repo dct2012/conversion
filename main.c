@@ -7,6 +7,7 @@
 void help();
 char* itoa(int, int);
 void print_everything(int, char*, char*);
+void predict_type(char*);
 void decimal(char*);
 void hexadecimal(char*);
 void binary(char*);
@@ -14,9 +15,15 @@ void easy_mode(char*);
 
 int main(int argc, char *argv[])
 {
-    if(argc == 1 || argc < 3 || strcmp(argv[1], "--help") == 0)
+    if(argc == 1 || strcmp(argv[1], "--help") == 0)
         help();
-    
+   
+    else if (argc == 2)
+        predict_type(argv[1]);
+
+    else if (strcmp(argv[1], "-p") == 0)
+        predict_type(argv[2]);
+
     else if(strcmp(argv[1], "-d") == 0)
         decimal(argv[2]);
     
@@ -38,10 +45,11 @@ int main(int argc, char *argv[])
 void help()
 {
     puts("--help         display help page");
-    puts("-h (hex)       to converge hex to binary and decimal");
-    puts("-b (binary)    to converge binary to hex and decimal");
-    puts("-d (decimal)   to converge decimal to binary and hex");
+    puts("-h (hex)       to convert hex to binary and decimal");
+    puts("-b (binary)    to convert binary to hex and decimal");
+    puts("-d (decimal)   to convert decimal to binary and hex");
     puts("-e (decimal)   convert using printf, etc");
+    puts("-p             predict type");
 }
 
 
@@ -220,4 +228,14 @@ void easy_mode(char *c)
     }
     else
         error_message("decimal");
+}
+
+void predict_type(char *t)
+{
+    if(is_binary(t))
+        binary(t);
+    else if (is_decimal(t))
+        decimal(t);
+    else
+        hexadecimal(t);
 }

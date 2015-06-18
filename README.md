@@ -9,8 +9,6 @@ TODO (these are pretty well in order of what should be done next)
 * implement atoi and decimal check
 * make things print nicer
 * work on negative numbers
-* add a predication
-    * be able to figure out what type the user inputed
 * add a loop
 * add invert option
     * on one of my computer's the xcb's are inverted?
