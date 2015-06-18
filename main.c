@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+//#include <unistd.h> //TODO: eventually add getopt
 #include <math.h>
 
 void help();
@@ -12,6 +13,7 @@ void decimal(char*);
 void hexadecimal(char*);
 void binary(char*);
 void easy_mode(char*);
+void loop(void (*f)(char*), char*);
 
 int main(int argc, char *argv[])
 {
@@ -20,9 +22,6 @@ int main(int argc, char *argv[])
    
     else if (argc == 2)
         predict_type(argv[1]);
-
-    else if (strcmp(argv[1], "-p") == 0)
-        predict_type(argv[2]);
 
     else if(strcmp(argv[1], "-d") == 0)
         decimal(argv[2]);
@@ -35,7 +34,10 @@ int main(int argc, char *argv[])
     
     else if(strcmp(argv[1], "-e") == 0)
         easy_mode(argv[2]);
-    
+   
+    else if(strcmp(argv[1], "-l") == 0)
+        loop(decimal, argv[2]);
+
     else
         puts("error! try --help\n");
 
@@ -49,7 +51,7 @@ void help()
     puts("-b (binary)    to convert binary to hex and decimal");
     puts("-d (decimal)   to convert decimal to binary and hex");
     puts("-e (decimal)   convert using printf, etc");
-    puts("-p             predict type");
+    puts("-l (loop)      continue to ask for (decimals) to convert");
 }
 
 
@@ -69,10 +71,17 @@ char* itoa(int val, int base)
 {
     int size = 0;
     int temp = val;
-    for(; temp; size++, temp /= base);
+    int n_bytes = 0;
+    for(; temp; size++, temp /= base)
+        if(size % 8 == 0)
+            n_bytes++;
 
-    char *buf = malloc(size);                               //TODO: this is actually 4 bytes not 4 chars
-   
+    if(n_bytes == 0)
+        n_bytes++;
+
+    char *buf = malloc(n_bytes);
+
+    buf[size] = '\0';
     for(int i = --size; val; i--, val /= base)
         buf[i] = "0123456789ABCDEF"[val % base];
 
@@ -123,7 +132,7 @@ void decimal(char *decimal)
 {
     if(is_decimal(decimal))
     { 
-        int number = char_to_int(decimal, char_array_length(decimal)); //TODO; create own atoi, also check if decimal
+        int number = char_to_int(decimal, char_array_length(decimal));
         char *b;
         char *h;
         print_everything(number, b = itoa(number, 2), h = itoa(number, 16));
@@ -217,7 +226,7 @@ void easy_mode(char *c)
 {
     if(is_decimal(c))
     {
-        int d = char_to_int(c, char_array_length(c));    //TODO: implement own atoi, check if decimal
+        int d = char_to_int(c, char_array_length(c));
         char *b;
 
         printf("Decimal:       %d\n", d);
@@ -238,4 +247,18 @@ void predict_type(char *t)
         decimal(t);
     else
         hexadecimal(t);
+}
+
+void loop(void (*f)(char*), char* c)
+{
+    bool run = true;
+
+    while(run)
+    {
+        (*f)(c);
+        printf("\nNext decimal (or q to quit): ");
+        scanf("%s", c);
+        if(c[0] == 'q' || c[0] == 'Q')
+            run = false;
+    }
 }

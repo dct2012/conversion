@@ -6,13 +6,14 @@ add a option to produce the conversion using shortcuts though.
 
 TODO (these are pretty well in order of what should be done next)
 ----
-* implement atoi and decimal check
 * make things print nicer
 * work on negative numbers
-* add a loop
+* loop
+    * make the user select what type to loop for
 * add invert option
     * on one of my computer's the xcb's are inverted?
     * so this would mean just invert the binary
 * add reverse
     * xcb's have the binary reversed
     * reverse the binary
+* add getopts
