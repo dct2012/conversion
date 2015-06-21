@@ -257,8 +257,10 @@ void loop(void (*f)(char*), char* c)
     {
         (*f)(c);
         printf("\nNext decimal (or q to quit): ");
-        scanf("%s", c);
-        if(c[0] == 'q' || c[0] == 'Q')
-            run = false;
+        if(scanf("%s", c) > 0)
+        {
+            if(c[0] == 'q' || c[0] == 'Q')
+                run = false;
+        }
     }
 }
